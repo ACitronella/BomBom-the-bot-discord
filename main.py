@@ -9,8 +9,8 @@ class BOMTHEBOT(discord.Client):
     async def on_message(self, message):
         if message.author != self.user:
             print("ur mum") 
-
+    async def on_connect(self):
+        print('Hi')
 
 bot = BOMTHEBOT()
 bot.run(BOT_TOKEN)
-
