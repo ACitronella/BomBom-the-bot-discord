@@ -1,16 +1,12 @@
-import discord
-import os
-from dotenv import load_dotenv
-load_dotenv()
+import settings as ENV
+from Client.bom_the_bot import BOMTHEBOT
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-class BOMTHEBOT(discord.Client):
-    async def on_message(self, message):
-        if message.author != self.user:
-            print("ur mum") 
-    async def on_connect(self):
-        print('Hi')
+print("ACIVATE_MESSAGE =", ENV.ACIVATE_MESSAGE)
+print("ALLOW_CHANNELS =",ENV.ALLOW_CHANNELS)
+print("BOT_NOI_TOKEN =", ENV.BOT_NOI_TOKEN)
+print("DISCORD_TOKEN =", ENV.DISCORD_TOKEN)
+print("CHATBOT_STYLE =", ENV.CHATBOT_STYLE)
+print("HEADERS =", ENV.HEADERS)
 
 bot = BOMTHEBOT()
-bot.run(BOT_TOKEN)
+bot.run(ENV.DISCORD_TOKEN)
