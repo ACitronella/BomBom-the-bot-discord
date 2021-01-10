@@ -1,6 +1,6 @@
 import settings as ENV
 import discord
-from .Services.chatbot import ChatBotService
+from Services.chatbot import ChatBotService
 
 class BOMTHEBOT(discord.Client):
 
@@ -25,7 +25,8 @@ class BOMTHEBOT(discord.Client):
     async def on_connect(self):
         all_ch = self.get_all_channels()
         for channel in all_ch:
-            # print(channel.name)
+            
             if channel.name in ENV.ALLOW_CHANNELS:
+                print("Bom found channel that he can speak.", channel.name)
                 await channel.send("hi! im bom")
 

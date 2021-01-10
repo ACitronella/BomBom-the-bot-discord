@@ -2,12 +2,12 @@ import settings as ENV
 from Client.bom_the_bot import BOMTHEBOT
 import logging
 
-# print("ACIVATE_MESSAGE =", ENV.ACIVATE_MESSAGE)
-# print("ALLOW_CHANNELS =",ENV.ALLOW_CHANNELS)
-# print("BOT_NOI_TOKEN =", ENV.BOT_NOI_TOKEN)
-# print("DISCORD_TOKEN =", ENV.DISCORD_TOKEN)
-# print("CHATBOT_STYLE =", ENV.CHATBOT_STYLE)
-# print("HEADERS =", ENV.HEADERS)
+print("ACIVATE_MESSAGE =", ENV.ACIVATE_MESSAGE)
+print("ALLOW_CHANNELS =",ENV.ALLOW_CHANNELS)
+print("BOT_NOI_TOKEN =", ENV.BOT_NOI_TOKEN)
+print("DISCORD_TOKEN =", ENV.DISCORD_TOKEN)
+print("CHATBOT_STYLE =", ENV.CHATBOT_STYLE)
+print("HEADERS =", ENV.HEADERS)
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -17,3 +17,4 @@ logger.addHandler(handler)
 
 bot = BOMTHEBOT()
 bot.run(ENV.DISCORD_TOKEN)
+
