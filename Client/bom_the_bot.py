@@ -1,3 +1,4 @@
+from DatabaseConnector.Database import DatabaseService
 import settings as ENV
 import discord
 from Services.chatbot import ChatBotService
@@ -6,7 +7,7 @@ from Services.chatbot import ChatBotService
 
 class BOMTHEBOT(discord.Client):
 
-    def __init__(self, db):
+    def __init__(self, db: DatabaseService):
         super().__init__()
         self.voice_client = None
         self.db_connected = db
@@ -14,7 +15,7 @@ class BOMTHEBOT(discord.Client):
     async def connect_voice_channel(self, voice_channel):
         if voice_channel is not None:
             self.voice_client = await voice_channel.connect()
-
+    
 
     async def on_message(self, message):
         # boolean
