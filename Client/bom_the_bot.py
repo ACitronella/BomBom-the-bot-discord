@@ -1,7 +1,8 @@
 from DatabaseConnector.Database import DatabaseService
+from Services.chatbot import ChatBotService
+
 import settings as ENV
 import discord
-from Services.chatbot import ChatBotService
 
 
 
@@ -16,12 +17,11 @@ class BOMTHEBOT(discord.Client):
         if voice_channel is not None:
             self.voice_client = await voice_channel.connect()
     
+    # message: discord.message.Message
+    async def on_message(self, message: discord.message.Message):
 
-    async def on_message(self, message):
-        # boolean
-        
         is_not_self = message.author != self.user
-        is_right_channel = message.channel.name in ENV.ALLOW_CHANNELS
+        is_right_channel = message.channel.id in ENV.ALLOW_CHANNELS
         is_prefix_bom = message.content.startswith(ENV.ACIVATE_MESSAGE)
         
         if is_not_self and is_right_channel and is_prefix_bom:
@@ -43,38 +43,33 @@ class BOMTHEBOT(discord.Client):
                     await self.voice_client.disconnect()
                 except AttributeError:
                     pass
+                self.db_connected.close_connection()
                 await message.channel.send("Bye!~")
                 await self.logout()
                 
             elif message_separated[0].lower() == "chat":
                 # using chatbot service here
                 try:
-                    print("bot got a message:", message_bot_got, "from:", message.author.name, "channel:", message.channel.name)
+                    print("bot got a message:", message_bot_got, "from:", message.author, "channel:", message.channel.name)
                     from_api = ChatBotService.botnoichitchat(message_bot_got[4:], ENV.CHATBOT_STYLE)
                     await message.channel.send(from_api)
                 except IndexError:
                     print("IndexError: something weird happend")
-            elif message_separated[0].lower() == "addchannel":
-                ENV.ALLOW_CHANNELS.append(message.channel.name)
+
+            # rewrite this later
+            # elif message_separated[0].lower() == "addchannel":
+            #     ENV.ALLOW_CHANNELS.append(message.channel.id)
 
         elif is_not_self and is_right_channel:
-            # reform data to mongodb document, maybe auxilary function
-            data = BOMTHEBOT.transform_data(message)
-            print(data)
-            # self.db_connected.insert_one(data)
+            print("Bom senses your line:", message.author, message.channel.name, message.content)
+            self.db_connected.insert_one(message)
+
 
 
     async def on_connect(self):
-        all_ch = self.get_all_channels()
-        for channel in all_ch:
-            if channel.name in ENV.ALLOW_CHANNELS:
+        for channel in self.get_all_channels():
+            print("channel: ", channel.name)
+            if channel.id in ENV.ALLOW_CHANNELS:
                 print("Bom found channel that he can speak.", channel.name)
-                await channel.send("hi! im bom")
 
 
-    @staticmethod
-    def transform_data(message):
-        return {"channel" : message.channel.name,
-                "user" : message.author.name,
-                "type_at" : message.created_at,
-                "message_content" : message.content}
