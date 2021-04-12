@@ -14,3 +14,7 @@ class DatabaseService:
 
     def close_connection(self):
         raise NotImplementedError()
+    
+    @staticmethod
+    def transform_data(data):
+        raise NotImplementedError()
